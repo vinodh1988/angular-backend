@@ -2,6 +2,9 @@ var express=require("express")
 var app=express()
 var keypeople= require("./server/routes/keypeople")
 var path = require("path")
+var cors= require("cors")
+
+app.use(cors())
 
 app.use("/keypeople",keypeople)
 
