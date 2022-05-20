@@ -6,6 +6,11 @@ var cors= require("cors")
 
 app.use(cors())
 
+app.use(express.json())
+const fileUpload = require('express-fileupload');
+
+app.use(fileUpload());
+
 app.use("/keypeople",keypeople)
 
 app.get("/",function(request,response){

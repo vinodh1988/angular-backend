@@ -8,6 +8,12 @@ const peoplecrud = {
       db.all(sql,[],callback);
     },
 
+    add : function(keypeople,callback){
+        const sql = "insert into keypeople(name,designation,place,photo) values(?,?,?,?)";
+
+        db.run(sql,[keypeople.name,keypeople.designation,keypeople.place,keypeople.photo],callback);
+    }
+
     
 }
 
