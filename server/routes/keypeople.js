@@ -14,6 +14,7 @@ route.get("/people",function(request,response){
 })
 
 route.post("/people",function(request,response){
+    console.log(request.body)
     let file= request.files.photo;
     file.mv(path.join(BASE_PATH,"images/"+file.name));
 
@@ -26,10 +27,10 @@ route.post("/people",function(request,response){
 
    dbcrud.add(people,function(err,data){
        if(err)
-           response.status(500).send("Data not stored")
+           response.status(500).json({message:"Data not stored"})
 
         else{
-            response.send("Data successfully upladed")
+            response.json({message:"Data successfully upladed"})
         }   
 
    })
