@@ -17,6 +17,18 @@ app.get("/",function(request,response){
     response.send("Node JS App is running")
 })
 
+app.post("/services/excel",function(request,response){
+    let file= request.files.excel;
+    let regex=/.+\.xlsx$/
+    if(regex.test(file.name)) {
+    file.mv(path.join(__dirname,"excelsheets/"+file.name))
+      response.json({message:"file uploaded"})
+    }
+    else
+      response.json({message: "file Must be in excel format"})
+    }
+)
+
 app.get("/images/:imagename",function(request,response){
     let imagename = request.params.imagename
     response.sendFile(path.join(__dirname,"images/"+imagename))
