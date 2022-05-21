@@ -3,6 +3,7 @@ var app=express()
 var keypeople= require("./server/routes/keypeople")
 var path = require("path")
 var cors= require("cors")
+const excelToJson = require('convert-excel-to-json');
 
 app.use(cors())
 
@@ -17,12 +18,20 @@ app.get("/",function(request,response){
     response.send("Node JS App is running")
 })
 
-app.post("/services/excel",function(request,response){
+app.post("/services/excel",async function(request,response){
     let file= request.files.excel;
     let regex=/.+\.xlsx$/
     if(regex.test(file.name)) {
-    file.mv(path.join(__dirname,"excelsheets/"+file.name))
-      response.json({message:"file uploaded"})
+    await file.mv(path.join(__dirname,"excelsheets/"+file.name))
+    const result = excelToJson({
+        sourceFile: path.join(__dirname,"excelsheets/"+file.name),
+        header:{
+            // Is the number of rows that will be skipped and will not be present at our result object. Counting from top to bottom
+            rows: 1 // 2, 3, 4, etc.
+        },
+        columnToKey: JSON.parse(request.body.columns)
+    });
+      response.json(result)
     }
     else
       response.json({message: "file Must be in excel format"})
